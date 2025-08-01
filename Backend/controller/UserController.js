@@ -15,7 +15,7 @@ router.get('/', function (req, res) {
 router.post('/registeruser',multer.single('image'), async function (req, res) {
 
    try {
-      const { userid, name, password, email, contact } = req.body;
+      const { userid, name, password, email, contact, location,  } = req.body;
       if (!req.file) return res.status(400).json({ error: 'Image is required' });
       const hash = await bcrypt.hash(password, 10);
   
@@ -25,6 +25,7 @@ router.post('/registeruser',multer.single('image'), async function (req, res) {
         password:hash,
         email,
         contact,
+        location,
         image: req.file.filename, // store filename or full path if needed
       });
   
@@ -71,8 +72,10 @@ router.post('/login', async function (req, res) {
             _id: user._id,
             name:user.name,
             userid: user.userid,
+            password: bcrypt.hash,
             email:user.email,
             contact: user.contact,
+            location: user.location,
         }
 
         return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true, sameSite: 'strict' }).json({

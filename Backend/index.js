@@ -17,6 +17,7 @@ database.once('connected', () => {
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //To serve uploaded files
 app.use('/uploads', express.static('uploads'));
